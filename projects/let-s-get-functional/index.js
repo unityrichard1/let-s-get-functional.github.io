@@ -19,27 +19,93 @@
  *    IMPORTANT: Make sure you replace <YOUR_GITHUB_FOLDER with your actual github folder name that is in your workspace.
  */
 
-var maleCount = function(array) {
+// 1. maleCount using filter
+function maleCount(customers) {
+    return customers.filter(customer => customer.gender === 'male').length;
+  }
   
-};
+  // 2. femaleCount using reduce
+  function femaleCount(customers) {
+    return customers.reduce((count, customer) => {
+      return customer.gender === 'female' ? count + 1 : count;
+    }, 0);
+  }
+  var oldestCustomer = function(array){
+    const oldest = _.reduce(array, function(acc, current){
+     
+        if (current.age > acc.age) {
+            return current
+        } else {
+            return acc
+        }
+        
+    }, array[0]);
+  
+    return oldest.name
+  
+ }
+  
+ var youngestCustomer = function(array){
+    let youngest = _.reduce(array, function(acc, current){
+        if (current.age < acc.age){
+            return current
+        } else {
+            return acc
+        }
+    }, array[0]);
+  
+    return youngest.name
+ }
+ function averageBalance(customers) {
+    const totalBalance = customers.reduce((sum, customer) => {
+      const balanceNumber = parseFloat(customer.balance.replace(/[$,]/g, ''));
+      return sum + balanceNumber;
+    }, 0);
+  
+    return totalBalance / customers.length;
+  }
+  
+ var firstLetterCount = function(array, letter) {
+    const sameStart = _.filter(array, function(customer) {
+        if (customer.name[0].toUpperCase() === letter.toUpperCase()) {
+            return customer
+        }
+    }); return sameStart.length
+ }
 
-var femaleCount;
+ function friendFirstLetterCount(customers, customer, letter) {
+    const target = customers.find(c => c.name === customer);
+    if (!target || !target.friends) return 0;
+      return target.friends.filter(friend => friend.name[0].toLowerCase() === letter.toLowerCase()).length;
+  }
+  function friendsCount(customers, name) {
+    return customers
+      .filter(customer => customer.friends.some(friend => friend.name === name))
+      .map(customer => customer.name);
+  }
 
-var oldestCustomer;
+  function topThreeTags(customers) {
+    const allTags = customers.flatMap(customer => customer.tags);
+  
 
-var youngestCustomer;
+    const tagCounts = allTags.reduce((counts, tag) => {
+      counts[tag] = (counts[tag] || 0) + 1;
+      return counts;
+    }, {});
+  
+    
+    return Object.entries(tagCounts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3)
+      .map(([tag]) => tag);
+  }
 
-var averageBalance;
-
-var firstLetterCount;
-
-var friendFirstLetterCount;
-
-var friendsCount;
-
-var topThreeTags;
-
-var genderCount;
+function genderCount(customers) {
+    return customers.reduce((summary, customer) => {
+      summary[customer.gender] = (summary[customer.gender] || 0) + 1;
+      return summary;
+    }, {});
+  }
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
